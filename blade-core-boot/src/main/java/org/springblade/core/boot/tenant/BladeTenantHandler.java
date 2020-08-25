@@ -20,9 +20,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.StringValue;
+import org.springblade.core.secure.constant.SecureConstant;
 import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
+import org.springblade.core.tool.utils.WebUtil;
+
+import java.util.Objects;
 
 /**
  * 租户信息处理器
@@ -42,7 +46,12 @@ public class BladeTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public Expression getTenantId(boolean where) {
-		return new StringValue(Func.toStr(SecureUtil.getTenantId(), TenantConstant.DEFAULT_TENANT_ID));
+		String tenantId = SecureUtil.getTenantId();
+		//解决用户初创时期，没有Token，无法获得TenantId问题
+		if(Func.isEmpty(tenantId)){
+			tenantId = Objects.requireNonNull(WebUtil.getRequest()).getHeader(properties.getHeaderKey());
+		}
+		return new StringValue(Func.toStr(tenantId, TenantConstant.DEFAULT_TENANT_ID));
 	}
 
 	/**

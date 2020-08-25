@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>blade-tool</artifactId>
-        <groupId>org.springblade</groupId>
+        <groupId>com.snailscoder</groupId>
         <version>2.7.1</version>
     </parent>
 
@@ -12,7 +12,7 @@
 
     <artifactId>blade-core-mybatis</artifactId>
     <name>${project.artifactId}</name>
-    <version>${blade.tool.version}</version>
+
     <packaging>jar</packaging>
 
     <dependencies>
@@ -24,7 +24,7 @@
         </dependency>
         <!--Blade-->
         <dependency>
-            <groupId>org.springblade</groupId>
+            <groupId>com.snailscoder</groupId>
             <artifactId>blade-core-secure</artifactId>
             <version>${blade.tool.version}</version>
         </dependency>

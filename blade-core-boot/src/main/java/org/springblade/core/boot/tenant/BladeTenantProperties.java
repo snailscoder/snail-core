@@ -39,6 +39,16 @@ public class BladeTenantProperties {
 	private String column = "tenant_id";
 
 	/**
+	 * 多租户字段名称
+	 */
+	private String headerKey = "Tenant-Id";
+
+	/**
+	 * 默认租户
+	 */
+	private String defaultTenant = "000000";
+
+	/**
 	 * 多租户数据表
 	 */
 	private List<String> tables = new ArrayList<>();

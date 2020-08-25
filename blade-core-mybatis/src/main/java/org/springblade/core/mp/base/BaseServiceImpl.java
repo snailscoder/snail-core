@@ -24,6 +24,7 @@ import org.springblade.core.tool.utils.DateUtil;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
 			entity.setCreateUser(user.getUserId());
 			entity.setUpdateUser(user.getUserId());
 		}
-		Date now = DateUtil.now();
+		LocalDateTime now = LocalDateTime.now();
 		entity.setCreateTime(now);
 		entity.setUpdateTime(now);
 		if (entity.getStatus() == null) {
@@ -60,7 +61,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
 		if (user != null) {
 			entity.setUpdateUser(user.getUserId());
 		}
-		entity.setUpdateTime(DateUtil.now());
+		entity.setUpdateTime(LocalDateTime.now());
 		return super.updateById(entity);
 	}
 
