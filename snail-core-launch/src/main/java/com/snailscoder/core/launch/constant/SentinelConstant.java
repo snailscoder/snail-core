@@ -18,12 +18,11 @@ package com.snailscoder.core.launch.constant;
 /**
  * sentinel配置.
  *
- * @author zhuangqian
+ * @author snailscoder
  */
 public interface SentinelConstant {
-
 	/**
 	 * sentinel 地址
 	 */
-	String SENTINEL_ADDR = "127.0.0.1:8858";
+	String SENTINEL_ADDR = "sentinel:8858";
 }

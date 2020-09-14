@@ -18,7 +18,7 @@ package com.snailscoder.core.test;
 
 
 import org.junit.runners.model.InitializationError;
-import com.snailscoder.core.launch.SnailApplication;
+import com.snailscoder.core.launch.StartApplication;
 import com.snailscoder.core.launch.constant.AppConstant;
 import com.snailscoder.core.launch.constant.NacosConstant;
 import com.snailscoder.core.launch.constant.SentinelConstant;
@@ -49,7 +49,7 @@ public class SnailSpringRunner extends SpringJUnit4ClassRunner {
 		}
 		String appName = snailBootTest.appName();
 		String profile = snailBootTest.profile();
-		boolean isLocalDev = SnailApplication.isLocalDev();
+		boolean isLocalDev = StartApplication.isLocalDev();
 		Properties props = System.getProperties();
 		props.setProperty("snail.env", profile);
 		props.setProperty("snail.name", appName);
@@ -62,10 +62,10 @@ public class SnailSpringRunner extends SpringJUnit4ClassRunner {
 		props.setProperty("info.desc", appName);
 		props.setProperty("spring.cloud.nacos.discovery.server-addr", NacosConstant.NACOS_ADDR);
 		props.setProperty("spring.cloud.nacos.config.server-addr", NacosConstant.NACOS_ADDR);
-		props.setProperty("spring.cloud.nacos.config.prefix", NacosConstant.NACOS_CONFIG_PREFIX);
 		props.setProperty("spring.cloud.nacos.config.file-extension", NacosConstant.NACOS_CONFIG_FORMAT);
 		props.setProperty("spring.cloud.sentinel.transport.dashboard", SentinelConstant.SENTINEL_ADDR);
 		props.setProperty("spring.main.allow-bean-definition-overriding", "true");
+		setSharedConfig(props,profile);
 		// 加载自定义组件
 		if (snailBootTest.enableLoader()) {
 			List<LauncherService> launcherList = new ArrayList<>();
@@ -76,5 +76,13 @@ public class SnailSpringRunner extends SpringJUnit4ClassRunner {
 		}
 		System.err.println(String.format("---[junit.test]:[%s]---启动中，读取到的环境变量:[%s]", appName, profile));
 	}
+
+	private static void setSharedConfig(Properties props,String profile){
+		props.setProperty("spring.cloud.nacos.config.shared-configs[0].data-id", NacosConstant.NACOS_CONFIG_COMMON + "." +NacosConstant.NACOS_CONFIG_FORMAT);
+		props.setProperty("spring.cloud.nacos.config.shared-configs[0].refresh", "true");
+		props.setProperty("spring.cloud.nacos.config.shared-configs[1].data-id", NacosConstant.NACOS_CONFIG_COMMON + "-" + profile + "." +NacosConstant.NACOS_CONFIG_FORMAT);
+		props.setProperty("spring.cloud.nacos.config.shared-configs[1].refresh", "true");
+	}
+
 
 }

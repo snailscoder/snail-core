@@ -29,7 +29,7 @@ import java.util.Map;
  * @author snailscoder
  */
 @ConfigurationProperties("snail")
-public class SnailProperties {
+public class AppProperties {
 
 	/**
 	 * 开发环境

@@ -19,6 +19,7 @@ import com.snailscoder.core.launch.constant.AppConstant;
 import com.snailscoder.core.launch.constant.NacosConstant;
 import com.snailscoder.core.launch.constant.SentinelConstant;
 import com.snailscoder.core.launch.service.LauncherService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.*;
@@ -34,7 +35,8 @@ import java.util.stream.Collectors;
  *
  * @author snailscoder
  */
-public class SnailApplication {
+@Slf4j
+public class StartApplication {
 
 	/**
 	 * Create an application context
@@ -61,10 +63,6 @@ public class SnailApplication {
 		String[] activeProfiles = environment.getActiveProfiles();
 		// 判断环境:dev、test、prod
 		List<String> profiles = Arrays.asList(activeProfiles);
-		// 预设的环境
-		List<String> presetProfiles = new ArrayList<>(Arrays.asList(AppConstant.DEV_CODE, AppConstant.TEST_CODE, AppConstant.PROD_CODE));
-		// 交集
-		presetProfiles.retainAll(profiles);
 		// 当前使用
 		List<String> activeProfileList = new ArrayList<>(profiles);
 		Function<Object[], String> joinFun = StringUtils::arrayToCommaDelimitedString;
@@ -81,7 +79,8 @@ public class SnailApplication {
 			// 同时存在dev、test、prod环境时
 			throw new RuntimeException("同时存在环境变量:[" + StringUtils.arrayToCommaDelimitedString(activeProfiles) + "]");
 		}
-		String startJarPath = SnailApplication.class.getResource("/").getPath().split("!")[0];
+
+		String startJarPath = StartApplication.class.getResource("/").getPath().split("!")[0];
 		String activePros = joinFun.apply(activeProfileList.toArray());
 		System.out.println(String.format("----启动中，读取到的环境变量:[%s]，jar地址:[%s]----", activePros, startJarPath));
 		Properties props = System.getProperties();
@@ -97,16 +96,23 @@ public class SnailApplication {
 		props.setProperty("spring.main.allow-bean-definition-overriding", "true");
 		props.setProperty("spring.cloud.nacos.discovery.server-addr", NacosConstant.NACOS_ADDR);
 		props.setProperty("spring.cloud.nacos.config.server-addr", NacosConstant.NACOS_ADDR);
-		props.setProperty("spring.cloud.nacos.config.prefix", NacosConstant.NACOS_CONFIG_PREFIX);
 		props.setProperty("spring.cloud.nacos.config.file-extension", NacosConstant.NACOS_CONFIG_FORMAT);
 		props.setProperty("spring.cloud.sentinel.transport.dashboard", SentinelConstant.SENTINEL_ADDR);
 		props.setProperty("spring.cloud.alibaba.seata.tx-service-group", appName.concat(NacosConstant.NACOS_GROUP_SUFFIX));
+		setSharedConfig(props,profile);
 		// 加载自定义组件
 		List<LauncherService> launcherList = new ArrayList<>();
 		ServiceLoader.load(LauncherService.class).forEach(launcherList::add);
 		launcherList.stream().sorted(Comparator.comparing(LauncherService::getOrder)).collect(Collectors.toList())
 			.forEach(launcherService -> launcherService.launcher(builder, appName, profile));
 		return builder;
+	}
+
+	private static void setSharedConfig(Properties props,String profile){
+		props.setProperty("spring.cloud.nacos.config.shared-configs[0].data-id", NacosConstant.NACOS_CONFIG_COMMON + "." +NacosConstant.NACOS_CONFIG_FORMAT);
+		props.setProperty("spring.cloud.nacos.config.shared-configs[0].refresh", "true");
+		props.setProperty("spring.cloud.nacos.config.shared-configs[1].data-id", NacosConstant.NACOS_CONFIG_COMMON + "-" + profile + "." +NacosConstant.NACOS_CONFIG_FORMAT);
+		props.setProperty("spring.cloud.nacos.config.shared-configs[1].refresh", "true");
 	}
 
 	/**

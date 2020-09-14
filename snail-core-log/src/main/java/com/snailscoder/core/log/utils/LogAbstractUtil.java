@@ -17,10 +17,9 @@
 package com.snailscoder.core.log.utils;
 
 import com.snailscoder.core.log.model.LogAbstract;
-import com.snailscoder.core.launch.props.SnailProperties;
+import com.snailscoder.core.launch.props.AppProperties;
 import com.snailscoder.core.launch.server.ServerInfo;
 import com.snailscoder.core.secure.utils.SecureUtil;
-import com.snailscoder.core.tool.utils.*;
 import com.snailscoder.core.tool.utils.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,14 +52,14 @@ public class LogAbstractUtil {
 	 * 向log中添加补齐其他的信息（eg：snail、server等）
 	 *
 	 * @param logAbstract     日志基础类
-	 * @param snailProperties 配置信息
+	 * @param appProperties 配置信息
 	 * @param serverInfo      服务信息
 	 */
-	public static void addOtherInfoToLog(LogAbstract logAbstract, SnailProperties snailProperties, ServerInfo serverInfo) {
-		logAbstract.setServiceId(snailProperties.getName());
+	public static void addOtherInfoToLog(LogAbstract logAbstract, AppProperties appProperties, ServerInfo serverInfo) {
+		logAbstract.setServiceId(appProperties.getName());
 		logAbstract.setServerHost(serverInfo.getHostName());
 		logAbstract.setServerIp(serverInfo.getIpWithPort());
-		logAbstract.setEnv(snailProperties.getEnv());
+		logAbstract.setEnv(appProperties.getEnv());
 		logAbstract.setCreateTime(DateUtil.now());
 
 		//这里判断一下params为null的情况，否则snail-log服务在解析该字段的时候，可能会报出NPE

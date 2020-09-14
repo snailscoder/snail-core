@@ -29,6 +29,7 @@ import com.snailscoder.core.secure.constant.SecureConstant;
 import com.snailscoder.core.secure.exception.SecureException;
 import com.snailscoder.core.secure.provider.IClientDetailsService;
 import com.snailscoder.core.tool.constant.RoleConstant;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ import java.util.*;
  *
  * @author snailscoder
  */
+@Slf4j
 public class SecureUtil {
 	private static final String SNAIL_USER_REQUEST_ATTR = "_SNAIL_USER_REQUEST_ATTR_";
 
@@ -71,11 +73,14 @@ public class SecureUtil {
 		if (request == null) {
 			return null;
 		}
+		log.info("request不为空，继续获取当前用户");
 		// 优先从 request 中获取
 		Object snailUser = request.getAttribute(SNAIL_USER_REQUEST_ATTR);
 		if (snailUser == null) {
+			log.info("request中user信息为空，继续从token中解析");
 			snailUser = getUser(request);
 			if (snailUser != null) {
+				log.info("token中解析出当前用户信息，用户ID:{}",String.valueOf(snailUser));
 				// 设置到 request 中
 				request.setAttribute(SNAIL_USER_REQUEST_ATTR, snailUser);
 			}
@@ -92,8 +97,10 @@ public class SecureUtil {
 	public static LoginUser getUser(HttpServletRequest request) {
 		Claims claims = getClaims(request);
 		if (claims == null) {
+			log.info("请求认证信息解析结果为空");
 			return null;
 		}
+		log.info("请求认证信息解析结果:{}", claims.toString());
 		String clientId = Func.toStr(claims.get(SecureUtil.CLIENT_ID));
 		Long userId = Func.toLong(claims.get(SecureUtil.USER_ID));
 		String roleId = Func.toStr(claims.get(SecureUtil.ROLE_ID));
@@ -253,10 +260,13 @@ public class SecureUtil {
 	 */
 	public static Claims getClaims(HttpServletRequest request) {
 		String auth = request.getHeader(SecureUtil.HEADER);
+		log.info("请求头中认证信息:{}", auth);
 		if (StringUtil.isNotBlank(auth) && auth.length() > AUTH_LENGTH) {
 			String headStr = auth.substring(0, 6).toLowerCase();
+			log.info("请求头中token类型信息:{}", headStr);
 			if (headStr.compareTo(SecureUtil.BEARER) == 0) {
 				auth = auth.substring(7);
+				log.info("请求头中Token信息:{}", auth);
 				return SecureUtil.parseJWT(auth);
 			}
 		} else {
@@ -299,6 +309,7 @@ public class SecureUtil {
 				.setSigningKey(Base64.getDecoder().decode(BASE64_SECURITY))
 				.parseClaimsJws(jsonWebToken).getBody();
 		} catch (Exception ex) {
+			log.error("Token解析失败", ex);
 			return null;
 		}
 	}

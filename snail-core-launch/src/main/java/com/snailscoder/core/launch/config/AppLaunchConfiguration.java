@@ -13,37 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.snailscoder.core.launch.constant;
+package com.snailscoder.core.launch.config;
+
+import lombok.AllArgsConstructor;
+import com.snailscoder.core.launch.props.AppProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 /**
- * Consul常量.
+ * 配置类
  *
  * @author snailscoder
  */
-public interface ConsulConstant {
+@Configuration
+@AllArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@EnableConfigurationProperties({
+	AppProperties.class
+})
+public class AppLaunchConfiguration {
 
-	/**
-	 * consul dev 地址
-	 */
-	String CONSUL_HOST = "http://localhost";
-
-	/**
-	 * consul端口
-	 */
-	String CONSUL_PORT = "8500";
-
-	/**
-	 * consul端口
-	 */
-	String CONSUL_CONFIG_FORMAT = "yaml";
-
-	/**
-	 * consul端口
-	 */
-	String CONSUL_WATCH_DELAY = "1000";
-
-	/**
-	 * consul端口
-	 */
-	String CONSUL_WATCH_ENABLED = "true";
 }

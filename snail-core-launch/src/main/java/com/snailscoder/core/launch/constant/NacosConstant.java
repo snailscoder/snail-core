@@ -30,7 +30,7 @@ public interface NacosConstant {
 	/**
 	 * nacos 配置前缀
 	 */
-	String NACOS_CONFIG_PREFIX = "application";
+	String NACOS_CONFIG_COMMON = "app-common";
 
 	/**
 	 * nacos 组配置后缀

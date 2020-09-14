@@ -120,6 +120,11 @@
             </dependency>
             <dependency>
                 <groupId>com.snailscoder</groupId>
+                <artifactId>snail-core-cache</artifactId>
+                <version>${snail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.snailscoder</groupId>
                 <artifactId>snail-core-transaction</artifactId>
                 <version>${snail.version}</version>
             </dependency>

@@ -23,7 +23,7 @@ import com.snailscoder.core.log.event.UsualLogListener;
 import com.snailscoder.core.log.feign.ILogClient;
 import lombok.AllArgsConstructor;
 import com.snailscoder.core.log.logger.SnailLogger;
-import com.snailscoder.core.launch.props.SnailProperties;
+import com.snailscoder.core.launch.props.AppProperties;
 import com.snailscoder.core.launch.server.ServerInfo;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +41,7 @@ public class SnailLogToolAutoConfiguration {
 
 	private final ILogClient logService;
 	private final ServerInfo serverInfo;
-	private final SnailProperties snailProperties;
+	private final AppProperties appProperties;
 
 	@Bean
 	public ApiLogAspect apiLogAspect() {
@@ -55,17 +55,17 @@ public class SnailLogToolAutoConfiguration {
 
 	@Bean
 	public ApiLogListener apiLogListener() {
-		return new ApiLogListener(logService, serverInfo, snailProperties);
+		return new ApiLogListener(logService, serverInfo, appProperties);
 	}
 
 	@Bean
 	public ErrorLogListener errorEventListener() {
-		return new ErrorLogListener(logService, serverInfo, snailProperties);
+		return new ErrorLogListener(logService, serverInfo, appProperties);
 	}
 
 	@Bean
 	public UsualLogListener snailEventListener() {
-		return new UsualLogListener(logService, serverInfo, snailProperties);
+		return new UsualLogListener(logService, serverInfo, appProperties);
 	}
 
 }

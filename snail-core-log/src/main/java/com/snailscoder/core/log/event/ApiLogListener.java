@@ -18,7 +18,7 @@ package com.snailscoder.core.log.event;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.snailscoder.core.launch.props.SnailProperties;
+import com.snailscoder.core.launch.props.AppProperties;
 import com.snailscoder.core.launch.server.ServerInfo;
 import com.snailscoder.core.log.constant.EventConstant;
 import com.snailscoder.core.log.feign.ILogClient;
@@ -42,7 +42,7 @@ public class ApiLogListener {
 
 	private final ILogClient logService;
 	private final ServerInfo serverInfo;
-	private final SnailProperties snailProperties;
+	private final AppProperties appProperties;
 
 
 	@Async
@@ -51,7 +51,7 @@ public class ApiLogListener {
 	public void saveApiLog(ApiLogEvent event) {
 		Map<String, Object> source = (Map<String, Object>) event.getSource();
 		LogApi logApi = (LogApi) source.get(EventConstant.EVENT_LOG);
-		LogAbstractUtil.addOtherInfoToLog(logApi, snailProperties, serverInfo);
+		LogAbstractUtil.addOtherInfoToLog(logApi, appProperties, serverInfo);
 		logService.saveApiLog(logApi);
 	}
 
