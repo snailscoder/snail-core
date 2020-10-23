@@ -143,13 +143,10 @@
 
     <distributionManagement>
         <repository>
-            <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/23588-release-h0KTCT/</url>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>snailscoder-core-repo</id>
+            <name>maven</name>
+            <url>https://snailscoder-maven.pkg.coding.net/repository/core/repo/</url>
         </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/23588-snapshot-BSMYuX/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
     </distributionManagement>
 </project>

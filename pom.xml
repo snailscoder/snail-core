@@ -159,53 +159,11 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>aliyun-repos</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>aliyun-plugin</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <distributionManagement>
         <repository>
-            <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/23588-release-h0KTCT/</url>
+            <id>snailscoder-core-repo</id>
+            <name>repo</name>
+            <url>https://snailscoder-maven.pkg.coding.net/repository/core/repo/</url>
         </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/23588-snapshot-BSMYuX/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
     </distributionManagement>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <distributionManagement>
-                <repository>
-                    <id>rdc-releases</id>
-                    <url>https://repo.rdc.aliyun.com/repository/23588-release-h0KTCT/</url>
-                </repository>
-                <snapshotRepository>
-                    <id>rdc-snapshots</id>
-                    <url>https://repo.rdc.aliyun.com/repository/23588-snapshot-BSMYuX/</url>
-                    <uniqueVersion>true</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-    </profiles>
-
 </project>
