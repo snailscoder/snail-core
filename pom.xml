@@ -161,9 +161,12 @@
 
     <distributionManagement>
         <repository>
-            <id>snailscoder-core-repo</id>
-            <name>repo</name>
-            <url>https://snailscoder-maven.pkg.coding.net/repository/core/repo/</url>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/23588-release-h0KTCT/</url>
         </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/23588-snapshot-BSMYuX/</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>
